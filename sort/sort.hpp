@@ -6,15 +6,18 @@
 
 
 template<typename TNumeric>
-void bubblesort(std::vector<TNumeric> &v) noexcept
+void bubblesort(
+    std::vector<TNumeric> &v, 
+    bool (*is_gt)(const TNumeric lhs, const TNumeric rhs)
+) noexcept
 {
 	const int32_t n = v.size();
 	for (int32_t i = 0; i < n; i++) {
-		for (int32_t j = i + 1; j < n; j++) {
-			if (v[i] > v[j]) {
-				TNumeric tmp = v[i];
-				v[i] = v[j];
-				v[j] = tmp;
+		for (int32_t j = 1; j < n; j++) {
+			if (is_gt(v[j-1], v[j])) {
+				TNumeric tmp = v[j];
+				v[j] = v[j-1];
+				v[j-1] = tmp;
 			}
 		}
 	}
@@ -22,13 +25,16 @@ void bubblesort(std::vector<TNumeric> &v) noexcept
 
 
 template<typename TNumeric>
-void selectionsort(std::vector<TNumeric> &v) noexcept
+void selectionsort(
+    std::vector<TNumeric> &v, 
+    bool (*is_gt)(const TNumeric lhs, const TNumeric rhs)
+) noexcept
 {
 	const int32_t n = v.size();
 	for (int32_t i = 0; i < n; i++) {
 		int32_t minidx = i;
 		for (int32_t j = i; j < n; j++) {
-			if (v[j] < v[minidx]) {
+			if (is_gt(v[minidx], v[j])) {
 				minidx = j;
 			}
 		}
